@@ -36,9 +36,13 @@
 }
 
 /* Logo */
+.navbar_logo {
+  display: flex;
+  align-items: center;
+}
+
 .navbar_logo img {
-  width: 115px;
-  height: 95px;
+  width: 100%;
 }
 
 /* Menu */
