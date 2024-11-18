@@ -47,22 +47,22 @@ const FindDestination = () => {
           <section className="destination-search">
             <h2>Find Your Perfect Destination</h2>
             <div className="time-selection">
-              <span>Category</span>
+              <span>Loại</span>
               <div className="time-selection-category">
                 <div className="time-selection-item">
-                  <label>Morning</label>
+                  <label>Buổi sáng</label>
                   <select value={morning} onChange={handleMorningChange}>
                     <option>Núi</option>
                   </select>
                 </div>
                 <div className="time-selection-item">
-                  <label>Afternoon</label>
+                  <label>Buổi chiều</label>
                   <select value={afternoon} onChange={handleAfternoonChange}>
                     <option>Biển</option>
                   </select>
                 </div>
                 <div className="time-selection-item">
-                  <label>Evening</label>
+                  <label>Buổi tối</label>
                   <select value={evening} onChange={handleEveningChange}>
                     <option>Khu du lịch</option>
                   </select>
@@ -71,7 +71,17 @@ const FindDestination = () => {
             </div>
             <div className="budget-days">
               <div className="input-info">
-                <label>Budget</label>
+                <label>Địa điểm</label>
+                <input
+                  type="text"
+                  placeholder="Enter your destination"
+                  value={budget}
+                  onChange={handleBudgetChange}
+                  className="input-info-address"
+                />
+              </div>
+              <div className="input-info">
+                <label>Ngân sách</label>
                 <input
                   type="number"
                   placeholder="Enter your budget"
@@ -80,7 +90,7 @@ const FindDestination = () => {
                 />
               </div>
               <div className="input-info">
-                <label>Total Days</label>
+                <label>Tổng số ngày</label>
                 <input
                   type="number"
                   placeholder="Enter your total days"
@@ -90,7 +100,7 @@ const FindDestination = () => {
               </div>
             </div>
             <button className="search-button" type="submit">
-              Search Destinations
+              Tìm kiếm các địa điểm 
             </button>
           </section>
         </form>

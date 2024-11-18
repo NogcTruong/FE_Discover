@@ -25,7 +25,7 @@ const ListDestination = () => {
               />
             </figure>
             <div className="card-body">
-              <h2 className="card-title">Explore Our Travel Plans</h2>
+              <h2 className="card-title">Khách sạn</h2>
               <div className="card-body-item">
                 <span>Loại: </span>
                 <span>Du lịch</span>
@@ -65,7 +65,7 @@ const ListDestination = () => {
                 <span>Giá: </span>
                 <span>1,000,000 VNĐ</span>
               </div>
-              <button className="btn btn-plan-list">Learn More</button>
+              <button className="btn btn-plan-list">Tìm hiểu thêm</button>
             </div>
           </div>
           <div className="card-item">
@@ -86,7 +86,7 @@ const ListDestination = () => {
                 <span>Giá: </span>
                 <span>1,000,000 VNĐ</span>
               </div>
-              <button className="btn btn-plan-list">Learn More</button>
+              <button className="btn btn-plan-list">Tìm hiểu thêm</button>
             </div>
           </div>
           <div className="card-item">
@@ -111,7 +111,7 @@ const ListDestination = () => {
                 <span>Giá: </span>
                 <span>1,000,000 VNĐ</span>
               </div>
-              <button className="btn btn-plan-list">Learn More</button>
+              <button className="btn btn-plan-list">Tìm hiểu thêm</button>
             </div>
           </div>
         </div>
