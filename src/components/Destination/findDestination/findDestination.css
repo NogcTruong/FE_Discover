@@ -70,8 +70,20 @@ button {
   cursor: pointer;
 }
 
-.recommendation:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+.recommendation:is(:hover, :focus) .recommendation-img {
+  opacity: 0.9;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.recommendation-figure {
+  overflow: hidden;
+  background-color: #008ae6;
+  width: 100px;
+  border-radius: 4px;
+  height: 100px;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .recommendation img {
@@ -159,7 +171,7 @@ label {
 
 input[type="number"],
 select {
-  padding: 6px 10px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 30px;
 }
