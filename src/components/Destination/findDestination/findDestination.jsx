@@ -97,27 +97,31 @@ const FindDestination = () => {
         <div className="recommendations">
           <h2>Recommended Destinations</h2>
           <div className="recommendation fade-in">
-            <div>
-              <img src={beach} alt="beach" />
-            </div>
+            <figure className="recommendation-figure">
+              <img src={beach} alt="beach" className="recommendation-img" />
+            </figure>
             <div className="recommendation-info">
               <h3>Beautiful Beach</h3>
               <p>Experience the sun and sand at this beautiful beach.</p>
             </div>
           </div>
           <div className="recommendation fade-in">
-            <div>
-              <img src={mountain} alt="mountain" />
-            </div>
+            <figure className="recommendation-figure">
+              <img
+                src={mountain}
+                alt="mountain"
+                className="recommendation-img"
+              />
+            </figure>
             <div className="recommendation-info">
               <h3>Mountain Retreat</h3>
               <p>Enjoy a peaceful retreat in the mountains.</p>
             </div>
           </div>
           <div className="recommendation fade-in">
-            <div>
-              <img src={city} alt="city" />
-            </div>
+            <figure className="recommendation-figure">
+              <img src={city} alt="city" className="recommendation-img" />
+            </figure>
             <div className="recommendation-info">
               <h3>City Adventure</h3>
               <p>Explore the vibrant life of the city.</p>

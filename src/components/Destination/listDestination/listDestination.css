@@ -1,5 +1,9 @@
 .list-destination-container {
-  margin-top: 150px;
+  margin-top: 130px;
+}
+
+.list-destination-container .card-title {
+  font-size: 1.2rem;
 }
 
 .card {
@@ -13,13 +17,29 @@
   flex: 0 0 30%;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
   margin: 10px;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card-item:hover {
+  transform: translateY(-4px);
 }
 
 .card-item-figure {
-  padding: 10px;
+  margin: 16px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.card-item:is(:hover, :focus-within) .card-item-figure .card-item-img {
+  opacity: 0.9;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
 .card-item-img {
@@ -64,4 +84,3 @@
 .btn:hover {
   background-color: #008ae6;
 }
-
