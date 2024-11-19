@@ -1,99 +1,166 @@
 // import { useState } from "react";
 import "./detailDestination.css";
 import beach from "../../../assets/img/beach.jpg";
+import { useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 // import mountain from "../../../assets/img/mountain.jpg";
 // import city from "../../../assets/img/CityAdventure.jpg";
 
 const DetailDestination = () => {
+  const location = useLocation();
+  const { currentDestination, allDestinations, selectedDay } =
+    location.state || {};
+  const totalDays = Math.ceil(allDestinations?.length / 3);
+  const [activeDay, setActiveDay] = useState(selectedDay || 1);
+
+  const getDaySchedule = () => {
+    const schedule = [];
+
+    for (let day = 0; day < totalDays; day++) {
+      const dayDestinations = allDestinations?.slice(day * 3, (day + 1) * 3);
+      const daySchedule = {
+        dayNumber: day + 1,
+        title: dayDestinations?.map((dest) => dest.name).join(" - "), // Tạo tiêu đề từ tên các địa điểm
+        destinations: dayDestinations?.map((dest, index) => ({
+          ...dest,
+          session: getSession(index),
+        })),
+      };
+      schedule.push(daySchedule);
+    }
+    return schedule;
+  };
+
+  const handleDayClick = (dayNumber) => {
+    setActiveDay(dayNumber);
+  };
+
+  const getSession = (index) => {
+    switch (index) {
+      case 0:
+        return "Buổi sáng";
+      case 1:
+        return "Buổi chiều";
+      case 2:
+        return "Buổi tối";
+      default:
+        return "";
+    }
+  };
+
+  const daySchedule = getDaySchedule();
+  const filteredDestinations = useMemo(() => {
+    const startIndex = (activeDay - 1) * 3;
+    const endIndex = startIndex + 3;
+    return allDestinations?.slice(startIndex, endIndex);
+  }, [activeDay, allDestinations]);
+
   return (
     <div className="detail-destination">
       <div className="container">
         <div>
-          <h1 className="detail-destination-title">Khám phá kỳ quan Iceland</h1>
+          <h1 className="detail-destination-title">
+            Khám phá {currentDestination?.address}
+          </h1>
           <p className="detail-destination-description">
-            Chuyến phiêu lưu kéo dài 7 ngày qua những cảnh quan tuyệt đẹp của
-            Iceland, bao gồm sông băng, mạch nước phun và Bắc cực quang.
+            {`Lịch trình ngày ${activeDay}`} tại {currentDestination?.address}.
           </p>
         </div>
         <div className="section">
           <div className="section-left">
             <h2 className="section-left-title">Hành Trình</h2>
             <div className="section-content">
-              <div className="section-left-item">
-                <h3 className="section-left-topic">Ngày 1: Đến Reykjavik</h3>
-                <p className="section-left-description">
-                  Đến Reykjavik và nhận phòng khách sạn. Tận hưởng miễn phí ngày
-                  khám phá thủ đô.
-                </p>
-              </div>
-              <div className="section-left-item">
-                <h3 className="section-left-topic">
-                  Ngày 2: Chuyến tham quan vòng tròn vàng
-                </h3>
-                <p className="section-left-description">
-                  Tham quan khu vực địa nhiệt Geysir, Vườn quốc gia Thingvellir,
-                  và thác Gullfoss.
-                </p>
-              </div>
+              {daySchedule.map((day) => (
+                <div
+                  className={`section-left-item ${
+                    day.dayNumber === activeDay ? "active" : ""
+                  }`}
+                  key={day.dayNumber}
+                  onClick={() => handleDayClick(day.dayNumber)}
+                >
+                  <h3 className="section-left-topic">
+                    Ngày {day.dayNumber}: {day.title}
+                  </h3>
+                  {day.dayNumber === activeDay && (
+                    <div className="day-schedule">
+                      {day.destinations.map((dest) => (
+                        <div key={dest._id} className="schedule-item">
+                          <div className="schedule-details">
+                            <h4 className="schedule-time">{dest.session}:</h4>
+                            <p className="schedule-description">
+                              {dest.description || "Chưa có mô tả chi tiết"}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
           <div className="section-right">
             <h2 className="section-right-title">Chi Tiết</h2>
             <div className="section-right-content">
-              <div className="section-right-item">
-                <h3 className="section-right-topic">Khách sạn Reykjavik</h3>
-                <div className="section-right-clock">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                    className="section-clock-icon"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M12 20a7 7 0 0 1-7-7a7 7 0 0 1 7-7a7 7 0 0 1 7 7a7 7 0 0 1-7 7m0-16a9 9 0 0 0-9 9a9 9 0 0 0 9 9a9 9 0 0 0 9-9a9 9 0 0 0-9-9m.5 4H11v6l4.75 2.85l.75-1.23l-4-2.37zM7.88 3.39L6.6 1.86L2 5.71l1.29 1.53zM22 5.72l-4.6-3.86l-1.29 1.53l4.6 3.86z"
-                    />
-                  </svg>
-                  <span className="section-clock-open">12:00</span>
-                  <span className="section-clock-dash"> - </span>
-                  <span className="section-clock-close">22:00</span>
-                </div>
-                <div className="section-right-category">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                    className="section-category-icon"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1m10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1M4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1m13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4"
-                    />
-                  </svg>
-                  <div className="section-category">
-                    <span className="section-category-text">Loại:</span>
-                    <span className="section-category-text">Biển</span>
-                  </div>
-                </div>
-                <div className="section-right-price">
-                  <svg
-                    version="1.0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="26px"
-                    height="26px"
-                    viewBox="0 0 512.000000 512.000000"
-                    preserveAspectRatio="xMidYMid meet"
-                    className="section-price-icon"
-                  >
-                    <g
-                      transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                      fill="#008ae6"
-                      stroke="none"
+              {filteredDestinations?.map((destination) => (
+                <div className="section-right-item" key={destination._id}>
+                  <h3 className="section-right-topic">{destination.name}</h3>
+                  <div className="section-right-clock">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 24 24"
+                      className="section-clock-icon"
                     >
                       <path
-                        d="M3950 4189 c-36 -12 -792 -257 -1680 -546 -1400 -455 -1627 -526
+                        fill="currentColor"
+                        d="M12 20a7 7 0 0 1-7-7a7 7 0 0 1 7-7a7 7 0 0 1 7 7a7 7 0 0 1-7 7m0-16a9 9 0 0 0-9 9a9 9 0 0 0 9 9a9 9 0 0 0 9-9a9 9 0 0 0-9-9m.5 4H11v6l4.75 2.85l.75-1.23l-4-2.37zM7.88 3.39L6.6 1.86L2 5.71l1.29 1.53zM22 5.72l-4.6-3.86l-1.29 1.53l4.6 3.86z"
+                      />
+                    </svg>
+                    <span className="section-clock-open">
+                      {destination.open_hours}
+                    </span>
+                    <span className="section-clock-dash"> - </span>
+                    <span className="section-clock-close">
+                      {destination.close_hours}
+                    </span>
+                  </div>
+                  <div className="section-right-category">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 24 24"
+                      className="section-category-icon"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1m10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1M4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1m13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4"
+                      />
+                    </svg>
+                    <div className="section-category">
+                      <span className="section-category-text">Loại:</span>
+                      <span>{destination.category}</span>
+                    </div>
+                  </div>
+                  <div className="section-right-price">
+                    <svg
+                      version="1.0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="26px"
+                      height="26px"
+                      viewBox="0 0 512.000000 512.000000"
+                      preserveAspectRatio="xMidYMid meet"
+                      className="section-price-icon"
+                    >
+                      <g
+                        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#008ae6"
+                        stroke="none"
+                      >
+                        <path
+                          d="M3950 4189 c-36 -12 -792 -257 -1680 -546 -1400 -455 -1627 -526
                         -1703 -534 -48 -4 -97 -14 -110 -20 -53 -27 -91 -65 -113 -113 l-24 -51 0
                         -909 c0 -652 3 -919 11 -947 16 -50 61 -105 112 -132 l42 -22 1845 -3 c1313
                         -2 1860 0 1896 8 34 7 66 23 93 46 79 68 75 41 81 582 l5 483 133 44 c74 24
@@ -109,16 +176,16 @@ const DetailDestination = () => {
                         235 99 32 333 108 520 169 187 60 351 114 365 120 37 14 55 13 79 -6z m135
                         -1104 l26 -20 0 -900 c0 -886 0 -899 -20 -919 -20 -20 -33 -20 -1854 -20
                         l-1833 0 -27 21 -26 20 0 899 0 899 26 20 27 21 1827 0 1827 0 27 -21z"
-                      />
-                      <path
-                        d="M767 2796 c-57 -21 -103 -61 -128 -113 l-24 -48 0 -630 0 -630 22
+                        />
+                        <path
+                          d="M767 2796 c-57 -21 -103 -61 -128 -113 l-24 -48 0 -630 0 -630 22
                         -41 c25 -47 73 -91 120 -111 23 -9 82 -13 201 -13 156 0 171 2 196 21 32 25
                         35 75 7 110 -19 23 -25 24 -185 27 -165 3 -166 3 -186 29 -20 26 -20 35 -18
                         621 l3 594 24 19 c21 17 40 19 176 19 139 0 155 2 179 21 32 25 35 75 7 110
                         -19 23 -24 24 -188 26 -123 2 -178 -1 -206 -11z"
-                      />
-                      <path
-                        d="M2323 2798 c-24 -12 -41 -47 -45 -97 -3 -31 -7 -35 -58 -51 -79 -24
+                        />
+                        <path
+                          d="M2323 2798 c-24 -12 -41 -47 -45 -97 -3 -31 -7 -35 -58 -51 -79 -24
                         -135 -55 -187 -103 -83 -76 -115 -148 -115 -252 1 -150 117 -283 294 -336 l68
                         -21 0 -214 0 -214 -27 6 c-122 30 -212 118 -213 205 0 36 -28 68 -67 75 -27 5
                         -37 1 -64 -25 -30 -30 -31 -35 -25 -84 10 -75 38 -129 97 -192 59 -62 158
@@ -130,51 +197,55 @@ const DetailDestination = () => {
                         95 -151 144 -22 82 22 159 119 207 34 17 66 31 71 31 4 0 8 -90 8 -200z m279
                         -437 c148 -106 100 -276 -96 -337 l-23 -7 0 200 0 200 41 -14 c22 -8 57 -27
                         78 -42z"
-                      />
-                      <path
-                        d="M3585 2799 c-51 -29 -60 -85 -20 -124 24 -24 28 -25 180 -25 152 0
+                        />
+                        <path
+                          d="M3585 2799 c-51 -29 -60 -85 -20 -124 24 -24 28 -25 180 -25 152 0
                         156 -1 180 -25 l25 -24 0 -596 c0 -582 0 -595 -20 -615 -18 -18 -33 -20 -170
                         -20 -189 0 -220 -12 -220 -86 0 -14 11 -36 25 -49 24 -25 27 -25 197 -25 146
                         0 179 3 214 19 51 23 108 90 123 144 9 30 11 212 9 657 -3 608 -3 615 -25 655
                         -24 46 -54 75 -103 101 -29 16 -62 19 -205 22 -113 1 -177 -2 -190 -9z"
-                      />
-                    </g>
-                  </svg>
-                  <div className="section-price">
-                    <span className="section-price-text">1,200,000</span>
-                    <span className="section-price-unit">đ</span>
+                        />
+                      </g>
+                    </svg>
+                    <div className="section-price">
+                      <span className="section-price-text">
+                        Giá: {destination.price?.toLocaleString()}
+                      </span>
+                      <span className="section-price-unit">đ</span>
+                    </div>
                   </div>
+                  <div className="section-right-address">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                      width="1.3em"
+                      height="1.3em"
+                      fill="#008ae6"
+                      className="section-address-icon"
+                    >
+                      <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                    </svg>
+                    <span className="section-address-text">
+                      Địa chỉ: {destination.address}
+                    </span>
+                  </div>
+                  <figure className="section-right-figure">
+                    <img
+                      src={destination.image || beach}
+                      alt={destination.name}
+                      className="section-right-img"
+                    />
+                  </figure>
+                  <p className="section-right-description">
+                    {destination.description || "Chưa có mô tả chi tiết"}
+                  </p>
                 </div>
-                <div className="section-right-address">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 384 512"
-                    width="1.3em"
-                    height="1.3em"
-                    fill="#008ae6"
-                    className="section-address-icon"
-                  >
-                    <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
-                  </svg>
-                  <span className="section-address-text">
-                    Hóa chất 123, Quận 1, TP.HCM
-                  </span>
-                </div>
-                <figure className="section-right-figure">
-                  <img src={beach} alt="Biển" className="section-right-img" />
-                </figure>
-                <p className="section-right-description">
-                  Tọa lạc tại trung tâm Reykjavik, khách sạn này cung cấp lưu
-                  trú thoải mái với tiện nghi hiện đại. Tọa lạc tại trung tâm
-                  Reykjavik, khách sạn này cung cấp lưu trú thoải mái với tiện
-                  nghi hiện đại.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
         <div className="detail-destination-button">
-          <a href="#" className="btn btn-detail-destination">
+          <a href="" className="btn btn-detail-destination">
             Book Now
           </a>
         </div>
