@@ -69,6 +69,10 @@
   animation: multiShadow 0.8s forwards;
 }
 
+.section-left-item.active {
+  animation: multiShadow 0.8s forwards;
+}
+
 .section-right-topic,
 .section-left-topic {
   font-size: 1rem;
@@ -78,6 +82,14 @@
 
 .section-right-topic {
   margin-bottom: 18px;
+}
+
+.schedule-item {
+  margin-bottom: 6px;
+}
+
+.schedule-time {
+  margin-bottom: 4px;
 }
 
 .section-right-description,
