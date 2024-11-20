@@ -25,6 +25,7 @@
 
 .section {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -34,6 +35,7 @@
 
 .section-right {
   flex: 0 0 49%;
+  margin-top: 34px;
 }
 
 .section-right-title,
@@ -44,15 +46,13 @@
 }
 
 .section-content {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  width: 580px;
 }
 
 .section-right-content {
   display: flex;
-  flex-direction: column;
   gap: 18px;
+  flex: 1;
 }
 
 .section-right-item,
@@ -65,8 +65,11 @@
 
 .section-right-item:hover,
 .section-left-item:hover {
-  /* box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75); */
   animation: multiShadow 0.8s forwards;
+}
+
+.section-right-item {
+  width: 30%;
 }
 
 .section-left-item.active {
