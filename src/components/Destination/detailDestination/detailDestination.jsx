@@ -1,10 +1,7 @@
-// import { useState } from "react";
 import "./detailDestination.css";
 import beach from "../../../assets/img/beach.jpg";
 import { useLocation } from "react-router-dom";
-import { useState, useMemo } from "react";
-// import mountain from "../../../assets/img/mountain.jpg";
-// import city from "../../../assets/img/CityAdventure.jpg";
+import { useState, useMemo, useEffect } from "react";
 
 const DetailDestination = () => {
   const location = useLocation();
@@ -13,6 +10,12 @@ const DetailDestination = () => {
   const totalDays = Math.ceil(allDestinations?.length / 3);
   const [activeDay, setActiveDay] = useState(selectedDay || 1);
 
+  useEffect(() => {
+    if (selectedDay) {
+      setActiveDay(selectedDay);
+    }
+  }, [selectedDay]);
+
   const getDaySchedule = () => {
     const schedule = [];
 
@@ -20,7 +23,7 @@ const DetailDestination = () => {
       const dayDestinations = allDestinations?.slice(day * 3, (day + 1) * 3);
       const daySchedule = {
         dayNumber: day + 1,
-        title: dayDestinations?.map((dest) => dest.name).join(" - "), // Tạo tiêu đề từ tên các địa điểm
+        title: dayDestinations?.map((dest) => dest.name).join(" - "),
         destinations: dayDestinations?.map((dest, index) => ({
           ...dest,
           session: getSession(index),
@@ -29,10 +32,6 @@ const DetailDestination = () => {
       schedule.push(daySchedule);
     }
     return schedule;
-  };
-
-  const handleDayClick = (dayNumber) => {
-    setActiveDay(dayNumber);
   };
 
   const getSession = (index) => {
@@ -52,7 +51,10 @@ const DetailDestination = () => {
   const filteredDestinations = useMemo(() => {
     const startIndex = (activeDay - 1) * 3;
     const endIndex = startIndex + 3;
-    return allDestinations?.slice(startIndex, endIndex);
+    return allDestinations?.slice(startIndex, endIndex).map((dest, index) => ({
+      ...dest,
+      session: getSession(index),
+    }));
   }, [activeDay, allDestinations]);
 
   return (
@@ -70,18 +72,16 @@ const DetailDestination = () => {
           <div className="section-left">
             <h2 className="section-left-title">Hành Trình</h2>
             <div className="section-content">
-              {daySchedule.map((day) => (
-                <div
-                  className={`section-left-item ${
-                    day.dayNumber === activeDay ? "active" : ""
-                  }`}
-                  key={day.dayNumber}
-                  onClick={() => handleDayClick(day.dayNumber)}
-                >
-                  <h3 className="section-left-topic">
-                    Ngày {day.dayNumber}: {day.title}
-                  </h3>
-                  {day.dayNumber === activeDay && (
+              {daySchedule
+                .filter((day) => day.dayNumber === activeDay)
+                .map((day) => (
+                  <div
+                    className={"section-left-item active"}
+                    key={day.dayNumber}
+                  >
+                    <h3 className="section-left-topic">
+                      Ngày {day.dayNumber}: {day.title}
+                    </h3>
                     <div className="day-schedule">
                       {day.destinations.map((dest) => (
                         <div key={dest._id} className="schedule-item">
@@ -94,9 +94,8 @@ const DetailDestination = () => {
                         </div>
                       ))}
                     </div>
-                  )}
-                </div>
-              ))}
+                  </div>
+                ))}
             </div>
           </div>
           <div className="section-right">
@@ -104,7 +103,9 @@ const DetailDestination = () => {
             <div className="section-right-content">
               {filteredDestinations?.map((destination) => (
                 <div className="section-right-item" key={destination._id}>
-                  <h3 className="section-right-topic">{destination.name}</h3>
+                  <h3 className="section-right-topic">
+                    {destination.session}: {destination.name}
+                  </h3>
                   <div className="section-right-clock">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
