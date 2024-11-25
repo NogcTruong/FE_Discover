@@ -57,6 +57,12 @@ const DetailDestination = () => {
     }));
   }, [activeDay, allDestinations]);
 
+  const calculateDayTotal = (dayDestinations) => {
+    return dayDestinations.reduce((total, dest) => {
+      return total + (dest.price || 0);
+    }, 0);
+  };
+
   return (
     <div className="detail-destination">
       <div className="container">
@@ -93,6 +99,12 @@ const DetailDestination = () => {
                           </div>
                         </div>
                       ))}
+                    </div>
+                    <div className="total-price">
+                      <span className="total-price-title">Tổng chi phí: </span>
+                      <span className="total-price-value">
+                        {calculateDayTotal(day.destinations).toLocaleString()}đ
+                      </span>
                     </div>
                   </div>
                 ))}

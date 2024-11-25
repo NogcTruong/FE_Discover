@@ -49,6 +49,19 @@
   width: 580px;
 }
 
+.total-price {
+  margin-top: 12px;
+}
+
+.total-price-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.total-price-value {
+
+}
+
 .section-right-content {
   display: flex;
   gap: 18px;

@@ -16,7 +16,7 @@ const ListDestination = () => {
           currentDestination: destination,
           allDestinations: planData.selectedTrips,
           currentIndex: index,
-          selectedDay: dayIndex + 1, // Sử dụng dayIndex được truyền vào
+          selectedDay: dayIndex + 1,
         },
       });
     } else {
@@ -71,6 +71,13 @@ const ListDestination = () => {
             <div className="card">
               {group.map((destination, index) => (
                 <div className="card-item" key={destination._id}>
+                  <span className="card-day-title">
+                    {index === 0
+                      ? "Buổi Sáng"
+                      : index === 1
+                      ? "Buổi Chiều"
+                      : "Buổi Tối"}
+                  </span>
                   <figure className="card-item-figure">
                     <img
                       className="card-item-img"

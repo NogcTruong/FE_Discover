@@ -187,7 +187,23 @@
 
 .time-selection span {
   margin: 16px 0 12px 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
+}
+
+.categories-checklist {
+  display: flex;
+  justify-content: space-around;
+}
+
+.category-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category-checkbox {
+  width: 20px;
+  height: 20px;
 }
 
 label {
