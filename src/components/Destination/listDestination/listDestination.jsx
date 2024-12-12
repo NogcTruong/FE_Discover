@@ -9,6 +9,20 @@ const ListDestination = () => {
   const location = useLocation();
   const planData = location.state?.planData;
 
+  const calculateAverageRating = (destinations) => {
+    if (!destinations || destinations.length === 0) return 0;
+    
+    const totalRating = destinations.reduce((sum, dest) => {
+      // Nếu rating không tồn tại hoặc không hợp lệ, coi như 0
+      const rating = parseFloat(dest.rating) || 0;
+      return sum + rating;
+    }, 0);
+    
+    return (totalRating / destinations.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating(planData?.selectedTrips);
+
   const handleLearnMore = (destination, index, dayIndex) => {
     if (destination) {
       navigate("/detailDestination", {
@@ -52,10 +66,13 @@ const ListDestination = () => {
 
   const groupedDestinations = groupDestinationsByDay(planData?.selectedTrips);
 
+  
+
   return (
     <div className="list-destination-container">
       <div className="container">
         <h1 className="card-title">Khám phá kế hoạch du lịch của chúng tôi</h1>
+        <p className="card-detail">Tôi đề xuất những địa điểm vì đã có những người có cùng mục tiêu như bạn và cho đánh giá cao: Được đánh giá {averageRating} về những địa điểm này.</p>
         {groupedDestinations.map((group, dayIndex) => (
           <div key={dayIndex} className="day-group">
             <h2 className="day-title" onClick={() => handleDayClick(dayIndex)}>

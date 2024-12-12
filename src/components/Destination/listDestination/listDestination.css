@@ -17,10 +17,12 @@
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 34px;
 }
 
 .card-item {
-  flex: 0 0 30%;
+  flex: 0 0 28%;
+  position: relative;
   background-color: #fff;
   border-radius: 10px;
   -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
@@ -35,10 +37,10 @@
 .card-day-title {
   font-size: 1.2rem;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 42px;
+  display: block;
+  top: -30px;
+  left: 33%;
+  position: absolute;
 }
 
 .card-item:hover {
@@ -46,7 +48,7 @@
 }
 
 .card-item-figure {
-  margin: 0 16px 16px;
+  margin: 26px 26px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -81,6 +83,10 @@
   margin-bottom: 10px;
 }
 
+.card-detail {
+  font-style: italic;
+}
+
 .day-group {
   margin: 30px 0;
 }
@@ -105,7 +111,7 @@
 .btn {
   background-color: #00a2ff;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
