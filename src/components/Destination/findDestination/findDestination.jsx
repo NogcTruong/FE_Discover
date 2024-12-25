@@ -43,7 +43,7 @@ const FindDestination = () => {
       const data = await response.json();
       console.log("Response data:", data);
 
-      if (data.type === "success" && Array.isArray(data.categories)) {
+      if (data.status === true && Array.isArray(data.categories)) {
         const formattedCategories = data.categories.map((name, index) => ({
           _id: index.toString(),
           name: name,
@@ -136,7 +136,7 @@ const FindDestination = () => {
         budget: Number(budget),
         quantity: Number(people),
         totalDay: Number(totalDays),
-        address: address,
+        location: address,
       });
 
       console.log("UserRequire Data:", userRequireData);

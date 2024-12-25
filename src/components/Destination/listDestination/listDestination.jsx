@@ -3,21 +3,29 @@ import mountain from "../../../assets/img/mountain.jpg";
 // import beach from "../../../assets/img/beach.jpg";
 // import city from "../../../assets/img/CityAdventure.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const ListDestination = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const planData = location.state?.planData;
+  const [numberOfPeople, setNumberOfPeople] = useState(0);
+
+  useEffect(() => {
+    if (planData?.quantity) {
+      setNumberOfPeople(planData.quantity);
+    }
+  }, [planData]);
 
   const calculateAverageRating = (destinations) => {
     if (!destinations || destinations.length === 0) return 0;
-    
+
     const totalRating = destinations.reduce((sum, dest) => {
       // Nếu rating không tồn tại hoặc không hợp lệ, coi như 0
       const rating = parseFloat(dest.rating) || 0;
       return sum + rating;
     }, 0);
-    
+
     return (totalRating / destinations.length).toFixed(1);
   };
 
@@ -66,13 +74,19 @@ const ListDestination = () => {
 
   const groupedDestinations = groupDestinationsByDay(planData?.selectedTrips);
 
-  
+  const calculateTotalForDestination = (price) => {
+    return price * numberOfPeople;
+  };
 
   return (
     <div className="list-destination-container">
       <div className="container">
         <h1 className="card-title">Khám phá kế hoạch du lịch của chúng tôi</h1>
-        <p className="card-detail">Tôi đề xuất những địa điểm vì đã có những người có cùng mục tiêu như bạn và cho đánh giá cao: Được đánh giá {averageRating} về những địa điểm này.</p>
+        <p className="card-detail">
+          Tôi đề xuất những địa điểm vì đã có những người có cùng mục tiêu như
+          bạn và cho đánh giá cao: Được đánh giá {averageRating} về những địa
+          điểm này.
+        </p>
         {groupedDestinations.map((group, dayIndex) => (
           <div key={dayIndex} className="day-group">
             <h2 className="day-title" onClick={() => handleDayClick(dayIndex)}>
@@ -113,11 +127,20 @@ const ListDestination = () => {
                     </div>
                     <div className="card-body-item">
                       <span>Địa điểm: </span>
-                      <span>{destination.address}</span>
+                      <span>{destination.location}</span>
                     </div>
                     <div className="card-body-item">
-                      <span>Giá: </span>
+                      <span>Giá/người: </span>
                       <span>{destination.price.toLocaleString()} VNĐ</span>
+                    </div>
+                    <div className="card-body-item">
+                      <span>Tổng tiền ({numberOfPeople} người): </span>
+                      <span>
+                        {calculateTotalForDestination(
+                          destination.price
+                        ).toLocaleString()}{" "}
+                        VNĐ
+                      </span>
                     </div>
                     <button
                       className="btn btn-plan-list"

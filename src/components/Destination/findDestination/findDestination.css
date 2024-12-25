@@ -132,7 +132,7 @@
 .destination-search,
 .recommendations {
   background: white;
-  height: 482px;
+  min-height: 482px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -186,19 +186,22 @@
 }
 
 .time-selection span {
-  margin: 16px 0 12px 0;
+  margin-top: 16px;
   font-size: 1rem;
 }
 
 .categories-checklist {
   display: flex;
-  justify-content: space-around;
+  
+  flex-wrap: wrap;
 }
 
 .category-checkbox-item {
   display: flex;
   align-items: center;
   gap: 6px;
+  width: 240px;
+  margin-top: 10px;
 }
 
 .category-checkbox {
